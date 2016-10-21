@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+           *{
+              margin:0;
+              padding:0;
+           }
+            ul li{
+                list-style:none;
+            }
+            .banner
+            {
+                width:400px;
+                height:140px;  /* 必须加高度,子元素是浮动的*/
+                border:1px solid black;
+                position: relative;
+                margin:200px auto;
+                overflow: hidden;
+            }
+            .banner .banner-img
+            {
+                width:1600px;     
+                position: absolute;
+                left:0;
+                top:0;
+            }
+            .banner .banner-img li
+            {
+                width:400px;
+                /*display: inline-block;*/
+                float: left;
+            }
+            .banner .banner-img li img
+            {
+                width:400px;
+            }
+
+           .banner .banner-btn
+           {
+                   position: absolute;
+                   left:0;
+                   bottom:10px;
+                   /*margin: 0 auto;*/
+                   text-align: center;   /*注意浮动元素的居中问题怎么解决，加text-align:center;注意宽度*/
+                   width:100%;
+
+           }
+           .banner .banner-btn li
+           {
+                display: inline-block;
+                background: #fff;
+                width: 8px;
+                height:8px;
+                border: 1px solid black;
+                border-radius: 4px;
+                margin:0 10px;
+                cursor:pointer;
+           }
+
+           .banner .banner-btn .current
+           {
+                 background-color: orange;
+           }
+
+           .banner .prev,.banner .next
+           {
+                 position: absolute;
+                 top:50%;
+                 width:40px;
+                 height:40px;
+                 border-radius: 4px;
+                 background: rgba(0,0,0,0.5);
+                 text-align: center;
+                 line-height: 40px;      /*垂直居中*/
+                 color:#fff;
+                 cursor: pointer;
+                 font-size:20px;
+                 margin-top:-20px;
+           }
+
+           .banner .prev
+           {
+               right:10px;
+           }
+           .banner .next
+           {
+               left:10px;
+           }
+    </style>
+<script src="jquery-1.9.1.min.js"></script>
+</head>
+<body>
+    <div class="banner">
+        <ul class="banner-img">
+            <li><a href="#"><img src="images/tu0.jpg" alt=""></a></li>
+            <li><a href="#"><img src="images/tu1.jpg" alt=""></a></li>
+            <li><a href="#"><img src="images/tu2.jpg" alt=""></a></li>
+        </ul>
+        <ul class="banner-btn">
+              <li class="current"></li>
+              <li></li>
+              <li></li>
+        </ul>
+
+        <div class="prev">&gt;</div>
+        <div class="next">&lt;</div>
+    </div>
+    <script>
+                $(".banner div").hide();
+
+                var clone = $(".banner li").eq(0).clone();
+                $(".banner .banner-img").append(clone);      //添加元素的时候记得把css中的宽度增加一个图片的宽度
+
+                  var pos = 0;
+                    var n = 0;
+                    
+                // move();
+               
+                     t=setInterval(function(){
+                            pos++;
+                            move()
+                    },2000);
+               
+
+                
+                function move()
+                {
+                            if(pos == 4)
+                            {
+                                 pos = 1;
+                                $(".banner .banner-img").css({left:0});
+                            }
+                            if(pos == -1)
+                            {
+                                pos = 2;
+                                $(".banner .banner-img").css({left:-1200});
+                            }
+                            if(pos == 3)
+                            {
+                                n=0;
+                            }
+                            else{
+                                n = pos;
+                            }
+                             $(".banner .banner-img").stop().animate({left:-pos*400},1000);   //注意加stop的区别在哪里
+                             $(".banner .banner-btn li").removeClass("current").eq(n).addClass("current");  //可以用n=%3的方式
+                }
+
+                //鼠标移入移出操作
+                $(".banner").mouseenter(function(){
+                       clearInterval(t);
+                         $(".banner div").fadeIn();
+                }).mouseleave(function(){
+                        t=setInterval(function(){
+                            pos++;
+                            move()
+                          },2000);
+                         $(".banner div").fadeOut();   
+                });
+    
+                //点击相应的pageControl能显示相应的图片
+                $(".banner .banner-btn li").click(function(){
+                    var index = $(this).index();
+                    $(".banner .banner-img").stop().animate({left:-index*400},1000);
+                    $(".banner .banner-btn li").removeClass("current").eq(index).addClass("current");
+                });
+
+                //单击上一页，下一页
+                $(".banner .next").click(function(){
+                          pos++;
+                          move();
+                });
+                
+                $(".banner .prev").click(function(){
+                          pos--;
+                          move();
+                });
+    </script>
+</body>
+</html>

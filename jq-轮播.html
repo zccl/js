@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+           *{
+              margin:0;
+              padding:0;
+           }
+            ul li{
+                list-style:none;
+            }
+            .banner
+            {
+                width:400px;
+                height:140px;  /* 必须加高度,子元素是浮动的*/
+                border:1px solid black;
+                position: relative;
+                margin:200px auto;
+                overflow: hidden;
+            }
+            .banner ul
+            {
+                width:1600px;     
+                position: absolute;
+                left:0;
+                top:0;
+            }
+            .banner ul li
+            {
+                width:400px;
+                /*display: inline-block;*/
+                float: left;
+            }
+            .banner ul li img
+            {
+                width:400px;
+            }
+    </style>
+<script src="jquery-1.9.1.min.js"></script>
+</head>
+<body>
+    <div class="banner">
+        <ul>
+            <li><a href="#"><img src="images/tu0.jpg" alt=""></a></li>
+            <li><a href="#"><img src="images/tu1.jpg" alt=""></a></li>
+            <li><a href="#"><img src="images/tu2.jpg" alt=""></a></li>
+        </ul>
+    </div>
+    <script>
+                // var pos = 0; 
+                //  setInterval(function(){
+                //         pos++;
+                //         if(pos == 3)
+                //         {
+                //             pos = 0;
+                //         } 
+                //        $(".banner ul").animate({left:-pos*400},1000);
+                //  },2000);
+                  
+                var clone = $(".banner li").eq(0).clone();
+                $(".banner ul").append(clone);      //添加元素的时候记得把css中的宽度增加一个图片的宽度
+
+                var pos = 0;
+                setInterval(function(){
+                        pos++;
+                        if(pos == 4)
+                        {
+                             pos = 1;
+                            $(".banner ul").css({left:0});
+                        }
+                         $(".banner ul").animate({left:-pos*400},1000);
+                },4000);
+
+    </script>
+</body>
+</html>
